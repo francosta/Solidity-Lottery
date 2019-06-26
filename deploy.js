@@ -17,20 +17,18 @@ const web3 = new Web3(provider);
 
 // Because we will be dealing with async functions and we do not want to use the .then but rather teh async/await functionality,
 // and the await/async can only be used within functions, we will create a function deploy and call it right away.
-const deploy = async () => {
+const deploy = async function() {
   const accounts = await web3.eth.getAccounts();
 
   console.log("Attempting to deploy from account", accounts[0]);
 
   // Access the eth module inside the web3 instance and deploy the ABI. The ABI is the interface that we have to parse to be treated by JS.
   const result = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: bytecode })
-    .send({ gas: "1000000", from: accounts[0] });
+    .deploy({ data: "0x" + bytecode })
+    .send({ from: accounts[0] });
+  console.log("Contract deployed to ", result.options.address);
 
   // result will be an instance of the contract.
-  console.log("This is a test to see if it comes up in the console.");
-  console.log(result);
-  console.log("Contract deployed to ", result.options.address);
 };
 
 deploy();
